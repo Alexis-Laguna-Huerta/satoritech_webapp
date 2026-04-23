@@ -27,10 +27,8 @@ export class WelcomeForm {
 
   onInput(event: Event) {
     const input = event.target as HTMLInputElement;
-    // Regex allows only letters and spaces
     let value = input.value.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
 
-    // Limit to 15 characters
     if (value.length > 15) {
       value = value.substring(0, 15);
     }
@@ -56,8 +54,6 @@ export class WelcomeForm {
 
     this.recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
-
-      // Aplicar misma lógica de filtrado
       let value = transcript.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
       if (value.length > 15) {
         value = value.substring(0, 15);

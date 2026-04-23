@@ -1,1 +1,71 @@
-<p>welcome-form works!</p>
+<div class="min-h-screen bg-[#1c1c1c] flex flex-col items-center font-sans text-white px-4 py-8">
+  <div class="w-full max-w-md flex flex-col flex-grow items-center relative">
+
+    <!-- Logo -->
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/alistel-temp.appspot.com/o/image%20-%202026-04-23T173359.813.png?alt=media&token=2dd138bc-5994-41cb-9d84-66a757b5ab38"
+      alt="Elektra Logo" class="h-18 mb-8" />
+
+    <!-- Greeting Image -->
+    <img
+      src="https://firebasestorage.googleapis.com/v0/b/alistel-temp.appspot.com/o/saludo.gif?alt=media&token=74b423a7-a63b-4d33-af7a-b5631d95f335"
+      alt="Greeting" class="w-64 h-auto mb-6" />
+
+    <!-- Title -->
+    <h1 class="text-[#ff5041] text-3xl font-bold text-center mb-4 leading-tight max-w-[350px] mx-auto">
+      ¡Te damos la bienvenida a Préstamo Elektra!
+    </h1>
+
+    <!-- Subtitle -->
+    <p class="text-gray-300 text-center mb-8 text-sm px-4 max-w-[320px] mx-auto">
+      Usa tu préstamo como dinero en efectivo o compra en donde quieras.
+    </p>
+
+    <!-- Form Section -->
+    <div class="w-full mt-auto mb-8 flex flex-col">
+      <p class="text-gray-200 text-lg text-center mb-6">
+        ¿Cómo prefieres que te llamemos?
+      </p>
+
+      <div class="w-full relative mb-1">
+        <!-- Input field -->
+        <input type="text" [formControl]="nameControl" placeholder="Escribe tu nombre" maxlength="15"
+          (input)="onInput($event)"
+          class="w-full bg-transparent border-b border-gray-500 text-white placeholder-gray-500 pb-2 focus:outline-none focus:border-white transition-colors"
+          (keydown.enter)="onSubmit()" />
+
+        <!-- Error messages -->
+        <div class="h-4 mt-1">
+          @if (nameControl.invalid && (nameControl.dirty || nameControl.touched)) {
+          @if (nameControl.errors?.['required']) {
+          <span class="text-red-500 text-xs">El nombre es requerido.</span>
+          } @else if (nameControl.errors?.['pattern']) {
+          <span class="text-red-500 text-xs">Solo letras y espacios permitidos.</span>
+          }
+          }
+        </div>
+
+        <!-- Character counter -->
+        <div class="text-right text-gray-400 text-xs font-semibold mt-1">
+          {{ nameLength }}/15 caracteres
+        </div>
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <button (click)="onSubmit()" [disabled]="isLoading"
+      class="w-full cursor-pointer bg-[#d8d8d8] text-gray-800 font-bold py-3 px-4 rounded-xl mt-auto disabled:opacity-50 disabled:cursor-not-allowed transition-opacity flex justify-center items-center h-[52px]">
+      @if (isLoading) {
+      <svg class="animate-spin h-6 w-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor"
+          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+        </path>
+      </svg>
+      } @else {
+      Comenzar
+      }
+    </button>
+  </div>
+</div>

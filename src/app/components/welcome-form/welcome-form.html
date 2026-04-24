@@ -13,11 +13,12 @@
       Usa tu préstamo como dinero en efectivo o compra en donde quieras.
     </p>
     <div class="w-full mt-auto mb-8 flex flex-col">
-      <p class="text-gray-200 text-lg text-center mb-6">
+      @if (!assignedFolio) {
+      <p class="text-gray-200 text-lg text-center mb-6 animate-fade-in">
         ¿Cómo prefieres que te llamemos?
       </p>
 
-      <div class="w-full relative mb-1">
+      <div class="w-full relative mb-1 animate-fade-in">
         <div class="relative w-full flex items-center">
           <input type="text" [formControl]="nameControl" placeholder="Escribe tu nombre" maxlength="15"
             (input)="onInput($event)"
@@ -57,9 +58,16 @@
           {{ nameLength }}/15 caracteres
         </div>
       </div>
+      } @else {
+      <div class="p-4 bg-green-500/20 border border-green-500 rounded-lg text-center animate-fade-in">
+        <p class="text-green-400 font-semibold mb-1">¡Registro exitoso!</p>
+        <p class="text-white text-lg">Tu folio es: <span class="font-bold text-green-400 text-2xl ml-2">{{ assignedFolio
+            }}</span></p>
+      </div>
+      }
     </div>
 
-    <button (click)="onSubmit()" [disabled]="isLoading"
+    <button (click)="assignedFolio ? onReset() : onSubmit()" [disabled]="isLoading"
       class="w-full cursor-pointer bg-[#d8d8d8] text-gray-800 font-bold py-3 px-4 rounded-xl mt-auto disabled:opacity-50 disabled:cursor-not-allowed transition-opacity flex justify-center items-center h-[52px]">
       @if (isLoading) {
       <svg class="animate-spin h-6 w-6 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -69,6 +77,8 @@
           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
         </path>
       </svg>
+      } @else if (assignedFolio) {
+      Regresar
       } @else {
       Comenzar
       }

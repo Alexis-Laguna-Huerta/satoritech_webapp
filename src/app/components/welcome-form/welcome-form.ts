@@ -1,16 +1,24 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { FormService } from '../../services/form/form.service';
+import { EncryptionService } from '../../services/encryption/encryption.service';
+import { CommonModule } from '@angular/common';
 
 declare const window: any;
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
 @Component({
   selector: 'app-welcome-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './welcome-form.html',
   styleUrl: './welcome-form.css',
 })
 export class WelcomeForm {
+  constructor(
+    private formService: FormService,
+    private encryptionService: EncryptionService
+  ) { }
+
   nameControl = new FormControl('', [
     Validators.required,
     Validators.maxLength(15),
@@ -20,6 +28,7 @@ export class WelcomeForm {
   isLoading = false;
   isRecording = false;
   recognition: any;
+  assignedFolio: string | null = null; // Para mostrar el folio generado
 
   get nameLength(): number {
     return this.nameControl.value?.length || 0;
@@ -76,7 +85,7 @@ export class WelcomeForm {
     this.recognition.start();
   }
 
-  onSubmit() {
+  async onSubmit() {
     if (this.nameControl.invalid) {
       this.nameControl.markAsTouched();
       this.nameControl.markAsDirty();
@@ -85,12 +94,33 @@ export class WelcomeForm {
 
     this.isLoading = true;
     this.nameControl.disable();
+    this.assignedFolio = null;
 
-    setTimeout(() => {
-      console.log('Nombre ingresado:', this.nameControl.value);
+    try {
+      const rawName = this.nameControl.value!;
+      
+      // Encriptamos el nombre antes de mandarlo
+      const encryptedName = this.encryptionService.encryptData(rawName);
+
+      const response = await this.formService.sendWelcomeForm(encryptedName);
+      
+      if (response && response.status === 200) {
+        // Obtenemos el folio encriptado y lo desencriptamos
+        const encryptedFolio = response.data?.folio;
+        if (encryptedFolio) {
+          this.assignedFolio = this.encryptionService.decryptData(encryptedFolio);
+        }
+      }
+    } catch (error) {
+      console.warn(error);
+    } finally {
       this.isLoading = false;
       this.nameControl.enable();
-      this.nameControl.reset();
-    }, 3000);
+    }
+  }
+
+  onReset() {
+    this.assignedFolio = null;
+    this.nameControl.reset();
   }
 }

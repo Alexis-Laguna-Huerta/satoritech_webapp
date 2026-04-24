@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { FormService } from '../../services/form/form.service';
 import { EncryptionService } from '../../services/encryption/encryption.service';
-import { BrandConfigService } from '../../services/config/brand-config.service';
 import { CommonModule } from '@angular/common';
+import { BrandConfig } from '../../app';
 
 declare const window: any;
 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -15,15 +15,12 @@ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogni
   styleUrl: './welcome-form.css',
 })
 export class WelcomeForm {
-  public brandConfig;
+  @Input() brandConfig!: BrandConfig;
 
   constructor(
     private formService: FormService,
-    private encryptionService: EncryptionService,
-    public brandConfigService: BrandConfigService
-  ) {
-    this.brandConfig = this.brandConfigService.config;
-  }
+    private encryptionService: EncryptionService
+  ) { }
 
   nameControl = new FormControl('', [
     Validators.required,
@@ -34,7 +31,7 @@ export class WelcomeForm {
   isLoading = false;
   isRecording = false;
   recognition: any;
-  assignedFolio: string | null = null; // Para mostrar el folio generado
+  assignedFolio: string | null = null;
 
   get nameLength(): number {
     return this.nameControl.value?.length || 0;
@@ -105,13 +102,11 @@ export class WelcomeForm {
     try {
       const rawName = this.nameControl.value!;
 
-      // Encriptamos el nombre antes de mandarlo
       const encryptedName = this.encryptionService.encryptData(rawName);
 
       const response = await this.formService.sendWelcomeForm(encryptedName);
 
       if (response && response.status === 200) {
-        // Obtenemos el folio encriptado y lo desencriptamos
         const encryptedFolio = response.data?.folio;
         if (encryptedFolio) {
           this.assignedFolio = this.encryptionService.decryptData(encryptedFolio);

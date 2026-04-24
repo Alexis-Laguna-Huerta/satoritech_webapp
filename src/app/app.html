@@ -1,1 +1,3 @@
-<app-welcome-form></app-welcome-form>
+@if (config()) {
+<app-welcome-form [brandConfig]="config()!"></app-welcome-form>
+}

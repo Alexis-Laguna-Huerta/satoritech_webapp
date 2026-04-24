@@ -1,0 +1,17 @@
+{
+  "hosting": {
+    "public": "dist/satoritech_webapp/browser",
+    "target": "webapp",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

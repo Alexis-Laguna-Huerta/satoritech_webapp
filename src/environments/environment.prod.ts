@@ -9,7 +9,7 @@ export const environment = {
         measurementId: "G-JFZP17YDLG"
     },
     production: true,
-    URL_API: 'http://localhost:8080/api',
-    // URL_API: 'https://solulogis-f669cd822d3b.herokuapp.com/api',
+    // URL_API: 'http://localhost:8080/api',
+    URL_API: 'https://cosmofon-0a7cdc7d646e.herokuapp.com/api',
     SECRET_KEY_AES: 'satoritech_aes_2026_super_secret'
 };

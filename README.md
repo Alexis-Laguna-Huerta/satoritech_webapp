@@ -1,59 +1,56 @@
-# SatoritechWebapp
+# Satoritech Webapp - Multi-Brand Form
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.8.
+Esta es una aplicación de Angular diseñada para ser una plataforma de formularios multi-marca (White-Label). La interfaz se adapta dinámicamente según la configuración proporcionada a través de un archivo JSON.
 
-## Development server
+## 🚀 Demo
+Puedes ver la aplicación en funcionamiento aquí: [https://satoritech-form.web.app](https://satoritech-form.web.app)
 
-To start a local development server, run:
+## 🛠 Decisiones de Diseño
 
+Para lograr un sistema de personalización robusto y escalable, se tomaron las siguientes decisiones técnicas:
+
+1.  **Desacoplamiento de Configuración**: La lógica de visualización está separada de los datos de marca. La aplicación consume un archivo de configuración (`config.json`) que define colores, imágenes y textos.
+2.  **Componentes "Dumb" (Presentacionales)**: Se utilizó el patrón de componentes presentacionales para que los elementos visuales reciban su configuración mediante `@Input()`, facilitando la reutilización y el testing.
+3.  **Inyección Dinámica de Estilos**: Se implementó una lógica para actualizar variables de CSS (CSS Custom Properties) en tiempo de ejecución, permitiendo que el cambio de colores primarios y fondos sea instantáneo y global.
+4.  **Gestión de Assets Locales**: Las imágenes y logos se manejan como assets locales para garantizar la disponibilidad y reducir la dependencia de servicios externos durante la fase de personalización.
+5.  **Estado de Carga Global**: Se integró un loader global para asegurar que la interfaz no se muestre hasta que la configuración de marca haya sido cargada y aplicada correctamente.
+
+## 🎨 Personalización
+
+Para probar diferentes marcas, puedes modificar el archivo de configuración con la siguiente estructura:
+
+### JSON de prueba para personalización:
+```json
+{
+	"logo": "/assets/logo2.png",
+	"image": "/assets/image2.png",
+	"primaryColor": "#D6B2FF",
+	"backgroundColor": "#1C1C1C",
+	"welcomeText": "¡Te damos la bienvenida a shopinbaz"
+}
+```
+
+## 💻 Desarrollo
+
+### Servidor de Desarrollo
+Para iniciar el servidor local, ejecuta:
 ```bash
 ng serve
 ```
+Navega a `http://localhost:4200/`. La aplicación se recargará automáticamente al detectar cambios.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
+### Construcción (Build)
+Para generar el bundle de producción:
 ```bash
 ng build
 ```
+Los archivos se guardarán en el directorio `dist/`.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
+### Pruebas Unitarias
+Ejecuta las pruebas con Vitest:
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## 📚 Recursos Adicionales
+Para más información sobre Angular CLI, visita [Angular CLI Overview](https://angular.dev/tools/cli).

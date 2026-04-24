@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "alistel-temp"
+  },
+  "targets": {
+    "alistel-temp": {
+      "hosting": {
+        "webapp": [
+          "satoritech-form"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

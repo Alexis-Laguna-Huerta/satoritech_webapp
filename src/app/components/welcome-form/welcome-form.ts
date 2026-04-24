@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
 import { FormService } from '../../services/form/form.service';
 import { EncryptionService } from '../../services/encryption/encryption.service';
+import { BrandConfigService } from '../../services/config/brand-config.service';
 import { CommonModule } from '@angular/common';
 
 declare const window: any;
@@ -14,10 +15,15 @@ const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecogni
   styleUrl: './welcome-form.css',
 })
 export class WelcomeForm {
+  public brandConfig;
+
   constructor(
     private formService: FormService,
-    private encryptionService: EncryptionService
-  ) { }
+    private encryptionService: EncryptionService,
+    public brandConfigService: BrandConfigService
+  ) {
+    this.brandConfig = this.brandConfigService.config;
+  }
 
   nameControl = new FormControl('', [
     Validators.required,
@@ -98,12 +104,12 @@ export class WelcomeForm {
 
     try {
       const rawName = this.nameControl.value!;
-      
+
       // Encriptamos el nombre antes de mandarlo
       const encryptedName = this.encryptionService.encryptData(rawName);
 
       const response = await this.formService.sendWelcomeForm(encryptedName);
-      
+
       if (response && response.status === 200) {
         // Obtenemos el folio encriptado y lo desencriptamos
         const encryptedFolio = response.data?.folio;
